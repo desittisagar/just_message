@@ -6,22 +6,16 @@ from pydantic import ConfigDict, BaseModel, Field, EmailStr
 from pydantic.functional_validators import BeforeValidator
 from typing_extensions import Annotated
 from bson import ObjectId
-
-from message.models import UserModel
 from core.models import BaseTimeModel
+from message.models import UserModel
 
 
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
-
-class Group(BaseTimeModel):
+class UnsentMessageModel(BaseTimeModel):
     """
-    Container for a single group record.
+    for a single message record - to be stored in background task
     """
     id: Optional[PyObjectId] = Field(alias="_id", default_factory=ObjectId, primary_key=True)
-    user_id: PyObjectId = Field(default=None, foreign_key="UserModel._id")
-    name: str = Field(...)
-    dest_user_id: PyObjectId = Field(default=None, foreign_key="UserModel._id")
-    media_url: str = Field(...)
-    timestamp: datetime = Field(default_factory=datetime.utcnow) 
-    text: str = Field(...)
+    source_user_id: PyObjectId = Field(default=None, foreign_key="UserModel._id")
+    timestamp: datetime = Field(default_factory=datetime.utcnow)

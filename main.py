@@ -1,12 +1,13 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from message.api import router as app1_router
 from group.api import router as app2_router
-from core.config import settings
+from typing import List
+# from core.config import settings
 
 app = FastAPI(title="My FastAPI Project", version="1.0.0")
 
-app.include_router(app1_router, prefix="/app1")
-app.include_router(app2_router, prefix="/app2")
+app.include_router(app1_router, prefix="/message")
+app.include_router(app2_router, prefix="/group")
 
 if __name__ == "__main__":
     import uvicorn
